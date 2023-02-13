@@ -125,10 +125,164 @@ public class Mathematic {
     }
 
 
-    public static void  main(String[] args) {
-        
-        System.out.println(efficientGcd(24, 8));
-
+    public static int lcm(int a, int b){
+        int result=Math.max(a, b);
+        boolean is=false;
+        while(!is){
+            if(result % a == 0 && result % b ==0){       // Time Complexity : O(a*b-max(a,b))
+                is=true;                                 // Auxiliary Space : O(1)
+                break;
+            } 
+            result++;
+        }
+        return result;
     }
+
+
+    public static int efficientLcm(int a, int b){       // Time Complexity : O(log(min(a,b)))
+        return a*b/efficientGcd(a, b);                  // Auxiliary Space : O(log(min(a,b)))              
+    }
+
+
+    public static int exactly3Divisors(int n){
+        int count=0;
+        for(int i=2; i*i<=n; i++){
+            boolean is=true;
+            
+            for(int k=2; k*k<i && is; k++)              // Time Complexity : O(n**1/2 * n**1/4)
+                if(i % k == 0) is = false;              // Auxiliary Space : O(1) 
+            
+            if(is) count++;    
+        }
+        return count;
+    }
+
+
+    public static int digitsInFactorial(int n){
+        double num=0;
+        for(int i=2; i<=n; i++){                        // Time Complexity : O(n)
+            num+=Math.log10(i);                         // Auxiliary Space : O(1)
+        }
+        return (int)num+1;
+    }
+
+
+    public static boolean isPrime(int n){
+        if(n == 1 || n == 0) return false;
+        if(n == 2 || n == 3) return true;
+        if(n % 2 == 0 || n % 3 == 0) return false;                // Time Complexity : O(n**1/2)
+        for(int i=5; i*i<=n; i+=6)                                // Auxiliary Space : O(1)
+           if(n % i == 0 || n % (i + 2 ) == 0) return false;
+        return true;
+    }
+
+
+    public static void primeFactors(int n){
+        for(int i=2; i<n; i++){
+            if(isPrime(i)){                                 // Time Complexity : O(n**2 * log(n))
+                int x=i;                                    // Auxiliary Space : O(1)
+                while(n % x == 0){
+                    System.out.println(i+" ");
+                    x*=i;
+                }
+            }
+        }
+    }
+
+
+    public static void efficientPrimeFactors(int n){        
+        for(int i=2; i*i<=n; i++){
+            while(n % i == 0){                              // Time Complexity : O(n**1/2)
+                System.out.println(i+" ");                  // Auxiliary Space : O(1)
+                n/=i;
+            }
+        }
+        if(n > 1) System.out.println(n+" ");
+    }
+
+
+    public static void printPrimeFactors(int n){
+        while(n % 2 == 0){
+            System.out.println(2+" ");
+            n/=2;
+        }
+
+        while(n % 3 == 0){                                 // Time Complexity : O(n**1/2)
+            System.out.println(3+" ");                     // Auxiliary Space : O(1)                                     
+            n/=3;
+        }
+
+        for(int i=5; i*i<=n; i+=6){
+            while(n % i == 0){
+                System.out.println(i+" ");
+                n/=i;
+            }
+
+            while(n % (i+2) == 0){
+                System.out.println((i+2)+" ");
+                n/=(i+2);
+            }
+        }
+        if(n > 3) System.out.println(n+" ");
+    }
+
+
+    public static void allDivisor(int n){
+
+        int i=1;
+        while(i*i <= n){                     // Time Complexity : O(n**1/2)
+            if(n % i ==0)                    // Auxiliary Space : O(1)   
+            System.out.println(i+" ");
+        }
+
+        while(i >= 1){
+            if(n % i == 0){
+                if(n!=i*i)
+                   System.out.println(i+" ");      
+            }
+        }
+    }
+
+
+    public static void sieveOfEratosthenes(int n){
+
+        for(int i=2; i<=n; i++){
+            if(isPrime(i))                         // Time Complexity : O(n**1/2 * n)                
+               System.out.print(i+" ");            // Auxiliary Space : O(1)   
+        }
+    }
+
+
+    public static void sieve(int n){
+
+        boolean prime[] =new boolean [n+1];
+        for(int i=0; i<n+1; i++)
+           prime[i]=true;
+        
+        for(int i=2; i*i<=n; i++){                 // Time Complexity : O(n * log(log(n)))          
+            if(isPrime(i)){                        // Auxiliary Space : O(n)   
+                for(int k=i*i; k<=n; k+=i){
+                    prime[i]=false;
+                }
+            }
+        }
+
+        for(int i=2; i<=n; i++){
+            if(prime[i])
+               System.out.print(i+" ");
+        }
+    }
+
+
+    public static int power(int x, int n){
+        int result=1;
+        while(n>0){                         // Time Complexity : O(log(n))
+            if(n % 2 == 1) result*=x;       // Auxiliary Space : O(1)
+            x=x*x;
+            n/=2;
+        }
+        return result;
+    }
+
     
 }
