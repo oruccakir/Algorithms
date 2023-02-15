@@ -1,5 +1,5 @@
 package Recursion;
-
+import java.util.ArrayList;
 public class Recursion {
 
     public static int power (int x, int n){
@@ -131,14 +131,71 @@ public class Recursion {
 
 
 
-    
+    public static void hanoi(int n, ArrayList<Integer> from, ArrayList<Integer> middle,ArrayList<Integer> to){
 
+        if(n == 0) return;
 
-    public static void main(String[] args) {
-        subsets("ABC","", 0);
+        hanoi(n-1, from, to,middle);                         // Time Complexity : O(2**n)
+        to.add(from.get(from.size()-1));                     // Auxiliary Space : O(n)                                                
+        from.remove(from.size()-1);
+        hanoi(n-1, middle,from,to);
+
     }
 
 
 
-    
+    public static void possibleWords(String []arr,String curr,ArrayList<String> set,int i, int k){
+        
+        if(i == arr.length){                                // Time Complexity : O(4**n * n)
+            set.add(curr);                                  //  Auxiliary Space : O(n)
+            return;
+        }
+
+        for(int m=k; m<arr[i].length(); m++)
+           possibleWords(arr, curr+arr[i].charAt(m),set,i+1,k);
+
+    }
+
+
+
+    public static int josephus(int n, int k){
+
+        if(n == 1) return 0;                              // Time Complexity : O(n)                              
+        return (josephus(n-1, k)+k)%n;                    // Auxiliary Space : O(n)
+
+    }
+
+
+
+    public static int arraySubSum(int []arr,int n,int sum,int arrSum){
+
+        if(n==0)
+           return sum==arrSum ? 1 : 0;                                                          // Time Complexity : O(2**n) 
+        return arraySubSum(arr, n-1,sum,arrSum)+arraySubSum(arr, n-1, sum, arrSum+arr[n-1]);    // Auxiliary Space : O(n)
+    }
+
+
+
+    public static void combination(String str, String curr, int n, String con){
+
+        if(n==con.length()){                                                     // Time Complexity : O(n**n)
+            System.out.print(curr+" ");                                          // Auxiliary Space : O(n)                                         
+            return;
+        }
+
+        for(int i=0; i<str.length(); i++){
+            combination(str.substring(0,i)+str.substring(i+1, str.length()),curr+str.charAt(i),n+1,con);
+        }
+    }
+
+
+
+    public static boolean isLucky(int n, int divisor){
+
+        if(divisor > n) return true;                               // Time Complexity : O(n**1/2)
+        if(n % divisor == 0) return false;                         // Auxiliary Space : O(n**1/2) 
+
+        return isLucky(n-n/divisor, divisor+1);
+    }
+
 }
