@@ -516,22 +516,5 @@ public class Arrays {
            arr[i]/=n;
         
     }
-
-
-
-
-
-    public static void main(String[] args) {
-
-        int []arr={0,0,0,4,1,1,2,3,25,8,0,0,04,505,40,5,5,222,0,02,0};
-        moveZeros(arr);
-        leftRotateOne(arr);
-        write(arr);
-        
-    }
-
-
-
-
     
 }
