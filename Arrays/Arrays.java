@@ -313,6 +313,211 @@ public class Arrays {
 
 
 
+    public static int findCandidateMajority( int arr[], int n){
+
+        int maj_index=0, count=1;
+
+        for(int i=1; i<n; i++){                              // Time Complexity : O(n)
+            if(arr[maj_index] == arr[i])                     // Auxiliary Space : O(1)
+               count++;
+            else 
+               count--;
+            
+            if(count==0){
+                maj_index=i;
+                count=1;
+            }
+        }
+        return arr[maj_index];
+    }
+
+
+
+    public static boolean isMajority(int arr[], int n, int candidate){
+
+        int count=0;                                        // Time Complexity : O(n)
+        for(int i=0; i<n; i++){                             // Auxiliary Space : O(1)
+            if(arr[i]==candidate)
+               count++;
+        }
+
+        return count > n/2 ? true : false;
+    }
+
+
+
+    public static boolean equbiliriumPoint(int arr[], int n){
+
+        for(int i=0; i<n; i++){
+
+            int ls=0, rs=0;
+
+            for(int j=0; j<i; j++)                       // Time Complexity : O(n**2)
+                ls+=arr[j];                              // Auxiliary Space : O(1)
+            
+            for(int j=i+1; j<n; j++)
+                rs+=arr[j];
+
+            if(rs==ls) return true;
+               
+        }
+        return false;
+    }
+
+
+
+    public static boolean ePoint(int arr[], int n){
+
+        int rs=0;
+
+        for(int i=0; i<n; i++)                  // Time Complexity : O(n**2) 
+           rs+=arr[i];                          // Auxiliary Space : O(1)
+        
+        int ls=0;
+
+        for(int i=0; i<n; i++){
+            rs-=arr[i];
+            if(ls == rs) return true;
+            ls+=arr[i];
+        }
+        return false;
+    }
+
+
+
+    public static int maxAppear(int left[], int right[], int n){
+        
+        int freq[] = new int[100];
+
+        for(int i=0; i<n; i++){
+
+            for(int j=left[i]; j<=right[i]; j++)                      // Time Complexity : O(n*max) 
+                freq[j]+=1;                                           // Auxiliary Space : O(1) 
+
+        }
+        int res=0;                                                    // max = maximum element in the right array
+
+        for(int i=1; i<100; i++){
+            if(freq[i]>freq[res])
+                res=i;
+        }
+        return res;
+    }
+
+
+
+    public static int efficientMaxAppear(int left[], int right[], int maxx, int n){
+
+        int arr[] = new int[maxx+n];
+
+        for(int i=0; i<n; i++){                                        // Time Complexity : O(n + max) 
+            arr[left[i]]+=1;                                           // Auxiliary Space : O(1) 
+            arr[right[i]]-=1;
+        }
+
+        int sum=arr[0], index=0;
+
+        for(int i=1; i<arr.length; i++){
+
+            arr[i]+=arr[i-1];
+
+            if(sum<arr[i]){
+
+                sum=arr[i];
+                index=i;
+                
+            }
+        }
+
+        return index;
+    }
+
+    static int n=0;
+    static int arr[] = new int[n];
+    static int arrSum[] = new int[n];
+
+    public static int getSum(int l, int r){
+
+        arrSum[0]=arr[0];
+
+        for(int i=1; i<n; i++)                   // Time Complexity : O(n)
+            arrSum[i]=arr[i]+arrSum[i-1];        // Auxiliary Space : O(1)
+        
+        return l==0 ? arr[r] : arr[r]-arr[l-1];
+    }
+
+
+
+    public static boolean isSumSub(int arr[], int n, int sum){
+
+        int start=0, current=0;
+
+        for(int i=0; i<n; i++){
+
+            current+=arr[i];
+
+            while(sum<current){                      // Time Complexity : O(n) 
+                current-=arr[start];                 // Auxiliary Space : O(1)
+                start++;
+            }                                        // Despite of two loop time complexity is linear
+
+            if(current == sum) return true;
+        }
+
+        return false;
+    }
+
+
+
+    public static int maxSumSizeK(int arr[], int k){
+
+        int sum=0, max=0;
+
+        for(int i=0; i<k; i++)                     // Time Complexity : O(n) 
+           sum+=arr[i];                            // Auxiliary Space : O(1)
+        
+        max=sum;                                   // Window sliding technique
+
+        for(int i=k; i<n; i++){
+            max = Integer.max(max, sum);
+            sum+=(arr[i]-arr[i-k]);
+        }
+
+        return max;
+    }
+
+
+
+    public static void printInGroups(int arr[], int n){
+
+        for(int i=1; i<n; i++){
+
+            if(arr[i]!=arr[i-1]){
+
+                if(arr[i]!=arr[0])                          // Time Complexity : O(n) 
+                   System.out.print("from "+i+" to");       // Auxiliary Space : O(1)
+                else
+                   System.out.println(i-1);
+            }
+
+            if(arr[n-1]!=arr[0])
+               System.out.println(n-1);
+        }
+    }
+
+
+
+    public static void arrange(int arr[]){
+
+        for(int i=0; i<n; i++)                       // Time Complexity : O(n)
+            arr[i]= n * (arr[arr[i]] % n)+arr[i];    // Auxiliary Space : O(1)
+        
+        for(int i=0;i<n; i++)
+           arr[i]/=n;
+        
+    }
+
+
 
 
 
