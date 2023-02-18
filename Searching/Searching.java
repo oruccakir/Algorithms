@@ -1,6 +1,7 @@
 package Searching;
 
-import Arrays.Arrays;
+import java.util.Arrays;
+import Array.Array;
 
 public class Searching {
 
@@ -248,7 +249,7 @@ public class Searching {
 
 
 
-    public static int getPeak(intarr[], int n){
+    public static int getPeak(int arr[], int n){
 
         if(n == 1) return arr[0];                // Time Complexity : O(n)
 
@@ -390,6 +391,133 @@ public class Searching {
 
 
 
+    public static double getMedianOfSortedArrays(int arr1[], int arr2[]){
+
+        int n1=arr1.length, n2=arr2.length;                                // Time Complexity : O(log(n))                             
+
+        int begin1=0, end1=n1;                                             // Auxiliary Space : O(1)
+
+        while(begin1 < end1){                                              // Assume that n1 <= n2 and the arrays are sorted 
+
+            int i1 = (begin1 + end1) / 2;                                  // That can be done using merging with O(n) time complexity and O(n) auxiliary space
+            int i2 = (n1 + n2 + 1) - i1;
+
+            int min1 = (i1 == n1) ? Integer.MAX_VALUE : arr1[i1];
+            int max1 = (i1 == 0) ? Integer.MIN_VALUE : arr1[i1-1];
+            int min2 = (i2 == n2) ? Integer.MAX_VALUE : arr2[i2];
+            int max2 = (i2 == 0) ? Integer.MIN_VALUE : arr2[i2-1];
+
+            if(max1 <= min1 && max2 <= min1){
+
+                if((n1 + n2) % 2 == 0) 
+                   return (double)(Math.max(max2, max1) + Math.min(min1, min2)) / 2;
+                else
+                   return (double) Math.max(max2, max1);
+
+            }
+            else if(max1 > min2) end1=i1-1;
+
+            else begin1 = i1+1;
+        }
+        return 0.0;
+    }
+
+
+
+    public static int findRepeat(int arr[], int n){
+
+        for(int i=0; i<n-1; i++)                        // Time Complexity : O(n ** 2) 
+           
+           for(int j=i+1; j<n; j++)                     // Auxiliary Space : O(1)        
+             
+              if(arr[i] == arr[j]) return arr[i];
+
+        return -1;
+    }
+
+
+
+    public static int findRepeating(int arr[], int n){
+
+        Arrays.sort(arr);                                 // Time Complexity : O(n * log(n)) 
+
+        for(int i=0; i<n-1; i++)                          // Auxiliary Space : O(1)
+
+           if(arr[i] == arr[i+1]) return arr[i];
+
+        return -1;
+    }
+
+
+
+    public static int findRepeated(int arr[], int n){
+
+        boolean visited[] = new boolean[n];             // Time Complexity : O(n) 
+
+        for(int i=0; i<n; i++){                         // Auxiliary Space : O(n)
+
+            if(visited[i]) return arr[i];               // for last three methods n>=2 only one element repeats and all elements from 0 to max(arr)
+
+            visited[i] = true;
+        }
+        return -1;
+    }
+
+
+
+    public static int efficientfindRepeatingWithoutZero(int arr[], int n){
+
+        int slow = arr[0], fast = arr[0];
+
+        do{                                                    // Time Complexity : O(n) 
+            slow=arr[slow];                                    // Auxiliary Space : O(1)
+
+            fast=arr[arr[fast]];
+
+        }while(slow !=fast);
+
+        slow = arr[0];
+
+        while(slow != fast){
+
+            slow = arr[slow];
+
+            fast = arr[fast];
+        }
+
+        return slow;
+    }
+
+
+
+    public static int efficientfindRepeatingWithZero(int arr[], int n){
+
+        int slow = arr[0]+1, fast = arr[0]+1;
+
+        do{                                                         // Time Complexity : O(n) 
+            slow=arr[slow] + 1;                                     // Auxiliary Space : O(1)
+
+            fast=arr[arr[fast] + 1] + 1;
+
+        }while(slow !=fast);
+
+        slow = arr[0] + 1;
+
+        while(slow != fast){
+
+            slow = arr[slow] + 1;
+
+            fast = arr[fast] + 1;
+        }
+
+        return slow - 1;
+    }
+
+
+
+    
+
+
 
 
 
@@ -401,7 +529,7 @@ public class Searching {
     public static void main(String[] args) {
 
         int arr[] ={1,2,3,4,5,6,7};
-        Arrays.write(arr);
+        Array.write(arr);
         System.out.println();
         System.out.println(binarySearch(arr, arr.length, 5));
         System.out.println(recursiveBinarySearch(arr, arr.length, 42,0,arr.length-1));
