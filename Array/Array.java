@@ -1,8 +1,6 @@
-package Arrays;
+package Array;
 
-import java.security.Identity;
-
-public class Arrays {
+public class Array {
 
     public static void write(int []arr){
         for(int item : arr)
@@ -208,7 +206,7 @@ public class Arrays {
             for(int j=0; j<i; j++)                 // Auxiliary Space : O(1)
                 left=Math.max(left, arr[j]);
 
-            int right=arr[j];
+            int right=arr[i];
             for(int j=i+1; j<n; j++)
                 right=Math.max(right,arr[j]);
             
