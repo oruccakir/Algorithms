@@ -1,6 +1,9 @@
 package Searching;
 
 import java.util.Arrays;
+
+import javax.naming.spi.DirStateFactory.Result;
+
 import Array.Array;
 
 public class Searching {
@@ -511,6 +514,130 @@ public class Searching {
         }
 
         return slow - 1;
+    }
+
+
+
+    public static int findMinRotatedSortedArray(int arr[], int n){
+
+        int l = 0, r = n-1;                                         // Time Complexity : O(log(n))
+
+        while(l <= r){                                              // Auxiliary Space : O(1)
+
+            int mid = (l+r) / 2;
+
+            if(mid == 0 || arr[mid-1] > arr[mid]) return arr[mid];
+
+            else if(arr[mid] > arr[r]) l=mid+1;
+
+            else r=mid-1;
+        }
+
+        return -1;                                                  // never reachs
+    }
+
+
+
+    public static int maxStep(int arr[], int n){
+
+        int step=0, maxStep=0;                       // Time Complexity : O(n)
+
+        for(int i=1; i<n; i++){                      // Auxiliary Space : O(1)
+
+            if(arr[i-1] < arr[i])
+               step++;
+            
+            else{
+                maxStep = Math.max(maxStep, step);
+                step=0;
+            }
+        }
+
+        maxStep = Math.max(maxStep, step);
+
+        return maxStep;
+
+    }
+
+
+
+    public static int maxWter(int arr[], int n){
+
+        int maxWater = 0;                                // Time Complexity : O(n ** 2)
+
+        for(int i=0; i<n; i++){                          // Auxiliary Space : O(1)
+
+            int water = 0;
+
+            for(int j=n-1; j>=i+1; j--){
+
+                water = Math.min(arr[i],arr[j]) * ( j - i -1);
+
+                maxWater = Math.max(water, maxWater);
+
+            }
+
+        }
+
+        return maxWater;
+         
+    }
+
+
+
+    public static int efficientMaxWater(int[]arr, int n){
+
+        int l=0, r=n-1;
+
+        int water = 0, maxWater  = 0;                                // Time Complexity : O(n)           
+
+        while(l <= r){                                               // Auxiliary Space : O(1)
+             
+            water = Math.min(arr[l],arr[r]) * ( r - l - 1);          // Two pointers approach
+
+            maxWater = Math.max(water, maxWater);
+
+            if(arr[l] < arr[r]) l++;
+
+            else r--;
+
+        }
+
+        return maxWater;
+    }
+
+
+
+    public static int[] findRepeatingElement(int arr[], int n){
+
+        int res[] = {-1, -1};
+
+        int repeated = -1;                                           // Time Complexity : O(n)
+
+        int l = 0, r = n-1;                                          // Auxiliary Space : O(1)
+
+        while(l <= r){                                               // Array consists of positive elements and array are consecutive sorted
+
+            int mid = (r+l) / 2;
+
+            if(arr[mid] >= mid + arr[0]) l = mid + 1;
+
+            else r = mid - 1;
+
+        }
+
+        if(l <= n-1)
+           repeated = arr[l];
+
+        if(repeated != -1){
+
+            res[0] = repeated;
+
+            res[1] = n - (arr[n-1] - arr[0]);
+
+        }
+
+        return res;
     }
 
 
