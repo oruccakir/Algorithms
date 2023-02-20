@@ -642,6 +642,98 @@ public class Searching {
 
 
 
+    public static int sum(int arr[],int start,int end){
+
+        int sum=0;                                         // Time Complexity : O(n)
+
+        for(int i=start; i<=end; i++)                      // Auxiliary Space : O(1)
+           sum+=arr[i];
+
+        return sum;
+
+    }
+
+
+    public static int minPages(int arr[], int n, int k){
+
+        if(k == 1) return sum(arr, 0 ,n-1);        // Time Complexity : O(n)
+
+        if(n == 1) return arr[0];                        // Auxiliary Space : O(1)                                   
+
+        int result = Integer.MAX_VALUE;
+
+        for(int i=1; i<n; i++)
+           result = Math.min(result, Math.max(minPages(arr, i, k-1), sum(arr,i,n-1)));
+
+        return result;
+
+    }
+
+
+
+    public static boolean isFeasible(int arr[], int n, int k, int answer){
+
+        int sum=0, studentsRequired=1;
+
+        for(int i=0; i<n; i++){                                 // Time Complexity : O(n ** k)
+
+            if(arr[i]+sum > answer){                            // Auxiliary Space : O(1) 
+
+                studentsRequired++;
+                sum=arr[i];
+
+            }
+
+            else{
+
+                sum+=arr[i];
+
+            }
+        }
+
+        return studentsRequired <= k;
+
+    }
+
+
+
+    public static int efficientMinPages(int arr[], int n, int k){
+
+        int sum=0, max=0;
+
+        for(int i=0; i<n; i++){                                 // Time Complexity : O( n * log(sum - max))
+
+            sum+=arr[i];
+            max = Math.max(max, arr[i]);                        // Auxiliary Space : O(1) 
+
+        }
+
+        int l = max, r = sum, result=0;
+
+        while(l <= r){
+
+            int mid = (l + r) / 2;
+            
+            if(isFeasible(arr, n, k, mid)){
+
+                result = mid;
+
+                r = mid-1;
+
+            }
+
+            else{
+
+                l = mid + 1;
+
+            }
+        }
+
+        return result;
+    }
+
+
+
     
 
 
