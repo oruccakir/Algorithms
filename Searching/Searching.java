@@ -734,6 +734,228 @@ public class Searching {
 
 
 
+    public static int ternarySearch(int arr[], int n, int x){
+
+        int l=0, r=n-1;
+
+        while(l <= r){
+                                
+            int mid1 = l +(r-l)/3;
+            int mid2 = r -(r-l)/3;
+
+            if(arr[mid1] == x) return mid1;              // Time Complexity : O( log3(n))
+            
+            if(arr[mid2] == x) return mid2;              // Auxiliary Space : O(1)
+
+            else if (arr[mid1] > x) r=mid1-1;
+            
+            else if(arr[mid2] < x) l=mid2+1;
+
+            else{
+                l=mid1+1;
+                r=mid2-1;
+            }
+        }
+
+        return -1;
+    }
+
+
+
+    public static int recursiveTernarySearch(int[] arr, int l, int r, int x){
+
+        if(l > r) return -1;
+
+        int mid1=l+(r-l)/3, mid2=r-(r-l)/3;                                  // Time Complexity : O( log3(n))
+
+        if(arr[mid1] == x ) return mid1;                                     // Auxiliary Space : O(log3(n))
+
+        if(arr[mid2] == x) return mid2;
+
+        else if(arr[mid1] > x) return recursiveTernarySearch(arr, l, mid1-1, x);
+
+        else if(arr[mid2] < x) return recursiveTernarySearch(arr, mid2+1, r, x);
+
+        else return recursiveTernarySearch(arr, mid1+1, mid2-1, x);
+
+    }
+
+
+
+    public static int[] findElements(int arr[], int n){
+
+        Arrays.sort(arr);
+
+        int array[] = new int[2];                     // Time Complexity : O( n * log(n))   
+
+        for(int i=1; i<n; i++){                       // Auxiliary Space : O(1)
+
+            if(arr[i-1] == arr[i]) array[0] = arr[i];    // array[0] = repeating number
+
+            if(arr[i] != i+1) array[1] = i+1;            // array[1] = missing number
+        }
+
+        return array;                                  // Auxiliary Space can be defined as O(log(n)) beacuse the Arrays.sort() usesu quick sort which is a recursive method 
+    }                                                  // but for now I do not know implementatin of that method
+
+
+
+    public static void findElementsWithAuxiliarySpace(int arr[], int n){
+
+        int count[] = new int[n+1];
+
+        int repeating = 0, missing = 0;                               // Time Complexity : O(n)
+
+        for(int i=0; i<n; i++)                                        // Auxiliary Space : O(n)
+            count[arr[i]]++;
+
+        for(int i=1; i<n+1; i++){
+            
+            if(count[i] == 0) missing = i;
+
+            if(count[i] == 2) repeating = i;
+
+        }
+
+        System.out.println("Mising : "+missing+" Repeating : "+repeating);
+
+    }
+
+
+
+    public static void repeating_missing(int arr[], int n){
+
+        int temp = 0, repeating = 0, missing = 0;
+
+        for(int i=0; i<n; i++){                          // Time Complexity : O(n)
+
+            temp = arr[Math.abs(arr[i]-1)];              // Auxiliary Space : O(1)
+
+            if(temp < 0){
+                repeating = Math.abs(arr[i]);
+                break;
+            }
+
+            arr[Math.abs(arr[i]-1)] = -arr[Math.abs(arr[i]-1)];
+
+        }
+
+
+        for(int i=0; i<n; i++){
+
+            if(arr[i] > 0){
+
+                missing = i+1;
+                break;
+
+            }
+        }
+
+        System.out.println("Mising : "+missing+" Repeating : "+repeating);
+
+    }
+
+
+
+    public static int[] twoRepeated(int arr[], int n){
+
+        int temp = 0, array[] = new int[2], index = 0;
+
+        for(int i=0; i<n; i++){                          // Time Complexity : O(n)
+
+            temp = arr[Math.abs(arr[i]-1)];              // Auxiliary Space : O(1)
+
+            if(temp < 0){
+                
+                array[index] = Math.abs(arr[i]);
+                index++;
+
+            }
+
+            arr[Math.abs(arr[i]-1)] = -arr[Math.abs(arr[i]-1)];
+
+        }
+
+        return array;
+    }
+
+
+
+    public static int arrange(int arr[], int n){
+
+        int index = 0, temp = 0;             
+
+        for(int i=0; i<n; i++){
+
+            if(arr[i] > 0){
+
+                temp = arr[index];                    // Time Complexity : O(n)
+                arr[index] = arr[i];
+                arr[i] = temp;                        // Auxiliary Space : O(1)
+
+                index++;
+
+            }
+
+        }
+
+        return index - 1;
+
+    }
+
+
+
+    public static int[] findMinMax(int arr[], int l, int r){
+
+        int holder[] = new int[2], max = Integer.MIN_VALUE, min = Integer.MAX_VALUE;
+
+        for(int i=l; i<=r; i++){                        
+
+            max = Math.max(max, arr[i]);                   // Time Complexity : O(n)
+            min = Math.min(min, arr[i]);                   // Auxiliary Space : O(1)
+
+        }
+
+        holder[0] = min;
+
+        holder[1] = max;
+
+        return holder;
+    }
+
+
+
+    public static int countOccurenceOccuredMoreThan(int arr[], int n, int k){
+
+        int count = 0, finalCount = 0;
+
+        Arrays.sort(arr);
+
+        for(int i=0; i<n-1; i++){                                // Time Complexity : O(n*log(n))
+
+            if(arr[i] == arr[i+1]) count++;                      // Auxiliary Space : O(1)
+
+            else{
+
+                if(count > n/k) finalCount++;
+
+                count =1;
+            } 
+                
+        }
+
+        if(count > n/k) finalCount++;
+
+        return finalCount;
+
+    }
+
+
+
+
+
+
+
     
 
 
@@ -749,9 +971,8 @@ public class Searching {
 
         int arr[] ={1,2,3,4,5,6,7};
         Array.write(arr);
-        System.out.println();
-        System.out.println(binarySearch(arr, arr.length, 5));
-        System.out.println(recursiveBinarySearch(arr, arr.length, 42,0,arr.length-1));
+        System.out.println(recursiveTernarySearch(arr, 0, arr.length-1, 5));
+        
         
     }
 
