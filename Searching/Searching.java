@@ -1,6 +1,9 @@
 package Searching;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.naming.spi.DirStateFactory.Result;
 
@@ -949,6 +952,141 @@ public class Searching {
         return finalCount;
 
     }
+
+
+
+
+    public static int efiicientCountOccurenceOccuredMoreThan(int arr[], int n, int k){
+
+        int barrier = n / k;
+
+        HashMap<Integer, Integer> map = new HashMap<>();                               // Time Complexity : O(n)
+
+        int count = 0;                                                                 // Auxiliary Space : O(n)
+
+        for(int i=0; i<n; i++)
+            map.put(arr[i],map.getOrDefault(arr[i],0)+1);
+        
+        for(Map.Entry<Integer,Integer> element : map.entrySet())
+            if(element.getValue() > barrier) count++;
+        
+        return count;
+
+    }
+
+
+
+    public static int majorityElement(int arr[], int n){
+
+        if( n == 1 ) return arr[0];
+
+        Arrays.sort(arr);                                // Time Complexity : O(n * log(n))
+
+        int majority = -1, count =0;                     // Auxiliary Space : O(1)
+
+        for(int i=1; i<n; i++){
+
+            if(arr[i] == arr[i-1]){
+
+                count++;
+                majority=arr[i];
+
+                if(count + 1 > n/2) return majority;
+            }
+
+            else {
+                count =0;
+            }
+        }
+
+        return -1;
+    }
+
+
+
+    public static int findCandidate(int arr[], int n){
+
+        int maj_index = 0, count = 1;                   // Time Complexity : O(n)
+
+
+        for(int i=1; i<n; i++){                         // Auxiliary Space : O(1)
+
+            if(arr[maj_index] == arr[i]) count++;
+
+            else count--;
+
+            if( count == 0){
+                maj_index = i;
+                count =1;
+            }
+        }
+
+        return arr[maj_index];
+    }
+
+
+
+    public static boolean isMajority(int arr[], int n, int cand){
+
+        int count =0;                               // Time Complexity : O(n)
+
+        for(int i=0; i<n; i++)                      // Auxiliary Space : O(1)
+           if(cand == arr[i]) count++;
+
+        return count > n/2;
+
+    }
+
+
+
+    public static int efficientMajorityElement(int arr[], int n){
+
+        int cand = findCandidate(arr, n);                // Time Complexity : O(n)
+
+        if(isMajority(arr, n, cand)) return cand;        // Auxiliary Space : O(1)
+
+        return -1;
+    }
+
+
+
+    public static ArrayList<Integer> subarraySum(int[] arr, int n, int s) 
+    {
+        ArrayList<Integer> array = new ArrayList<Integer>();
+        
+        int start = 0, sum = arr[0];                              // Time Complexity : O(n)
+        
+        for(int i=1; i<=n; i++){                                   // Auxiliary Space : O(1)
+                          
+            while(sum > s && start < i-1){                        // I do not why O(n) I will learn the reason
+                
+                sum -=arr[start];
+                start++;
+                
+            }
+            
+            if(sum == s){
+                
+                int p = i;
+                
+                array.add(start+1);
+                array.add(p);
+                
+                return array;
+            }
+            
+            if(i<n) sum+=arr[i];
+        }
+        
+        array.add(-1);
+        
+        return array;
+        
+    }
+
+
+
+    
 
 
 
