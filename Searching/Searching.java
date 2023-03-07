@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.naming.spi.DirStateFactory.Result;
+import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
+import javax.xml.crypto.dsig.keyinfo.RetrievalMethod;
 
 import Array.Array;
 
@@ -1084,49 +1086,231 @@ public class Searching {
         
     }
 
-
-
     
 
 
+public static int findSmallestMissing(int arr[], int n){
 
+    int last = arrange(arr, n);                 // Time Complexity : O(n)
 
+    int i=0;                                    // A uxiliary Space : o(1)
 
+    for(; i<last; i++){
 
-
-    
-
-
-
-
-
-
-
-
-
-
-    public static void main(String[] args) {
-
-        int arr[] ={1,2,3,4,5,6,7};
-        Array.write(arr);
-        System.out.println(recursiveTernarySearch(arr, 0, arr.length-1, 5));
-        
-        
+        if(Math.abs(arr[i])-1 < last+1 && arr[Math.abs(arr[i])-1] > 0)
+           arr[Math.abs(arr[i])-1] = arr[Math.abs(arr[i])-1];
     }
 
+    for(int k=0; k<=last; i++)
+       if(arr[k] > 0) return i+1;
+
+    return last + 2;
+}
+
+public static void swap(int arr[], int i, int k){
+
+    int temp = arr[i];
+    arr[i] = arr[k];
+    arr[k] = temp;
+
+}
+
+
+public static int missingNumber(int arr[], int n){
+
+    for(int i=0; i<n; i++){                      // Time Complexity : O(N)
+
+        int correctIndex = arr[i] -1;            // Auxiliary Space : O(1)
+
+        while(0 <= correctIndex && correctIndex <=n-1 && arr[i] != arr[correctIndex]){
+
+            swap(arr, i, correctIndex);
+
+            correctIndex = arr[i]-1;
+        }
+    }
+
+    for(int i=0; i<n; i++){
+        if(arr[i] != i+1) return i+1;
+    }
+
+    return n+1;
+}
+
+public static boolean isDecreasing(int arr[], int n){
+
+    int candidate_index = -1;
+
+    boolean isDecreasing = true;                       // Time Complexity : O(N)
+
+    for(int i=1; i<n; i++){                            // Auxiliary Space : O(1)
+
+        if(arr[i-1] < arr[i]) {
+            candidate_index = 1; break;
+        }
+    }
+
+    if(candidate_index == -1) return false;
+
+    if(arr[0] < arr[n-1]){
+        
+        for(int i= candidate_index; i<n-1; i++){
+
+            if(arr[i] < arr[i+1]){
+                isDecreasing = false;
+                break;
+            }
+
+        }
+    }
+    else isDecreasing = false;
+
+    return isDecreasing;
+}
+
+
+public static boolean isIncreasing(int arr[], int n){
+
+    int candidate_index = -1;
+
+    boolean isIncreasing = true;                       // Time Complexity : O(N)
+
+    for(int i=1; i<n; i++){                            // Auxiliary Space : O(1)
+
+        if(arr[i-1] > arr[i]) {
+            candidate_index = 1; break;
+        }
+    }
+
+    if(candidate_index == -1) return false;
+
+    if(arr[0] > arr[n-1]){
+        
+        for(int i= candidate_index; i<n-1; i++){
+
+            if(arr[i] > arr[i+1]){
+                isIncreasing = false;
+                break;
+            }
+
+        }
+    }
+    else isIncreasing = false;
+
+    return isIncreasing;
+}
+
+
+
+
+public static boolean checkRotatedSorted(int arr[], int n){
+
+    if( n == 1) return true;                                // Time Complexity : O(N)
+    if(n == 2) return false;                                // Auxiliary Space : O(1)
+
+    return isDecreasing(arr, n) || isIncreasing(arr, n);
+}
+
+public static boolean alternativeCheckRotatedSorted(int arr[], int n){
+
+    if(arr[n-1] <arr[0]){                                       // Time Complexity : O(N)
+                                      
+        int pivotalPoint = 0;                                   // Auxiliary Space : O(1)
+
+        for(int i=0; i<n-1; i++)
+           if(arr[i+1] < arr[i]) pivotalPoint++;
+
+        if(pivotalPoint == 1) return true;
+
+
+    }
+    else if(arr[n-1] > arr[0]){
+
+        int pivotalPoint = 0;
+
+        for(int i=0; i<n-1; i++)
+           if(arr[i+1] > arr[i]) pivotalPoint++;
+
+        if(pivotalPoint == 1) return true;
+
+
+    }
+
+    return false;
+
+}
 
 
 
 
 
+public static void reArrange(int arr[], int n){
+
+    int k = n-1, divisor = arr[k];                          // Time Complexity : O(N)
+
+    for(int i=0; i<n; i++){                                 // Auxiliary Space : O(1)
+        arr[i] = divisor * (arr[k] % divisor) +arr[i];     
+        k--;                                                // Array is sorted
+    }
+
+    for(int i=1; i<n; i*=2){
+        arr[i] = divisor * (arr[i/2] % divisor) +arr[i];
+    }
+
+    for(int i=0; i<n; i++)
+       arr[i] /= divisor;
+
+}
+
+
+
+public static void alternativeRearrange(int arr[], int n){
+
+    int max_index = n-1, min_index = 0;
+
+    int max_element = arr[max_index];                       // Time Complexity : O(N)
+
+    for(int i=0; i<n; i++){                                 // Auxiliary Space : O(1)
+
+        if(i % 2 == 0){                                     // Array is sorted
+
+            arr[i] += (arr[max_index] % max_element) * max_element;
+            max_index--;
+
+        }
+        else{
+
+            arr[i] +=(arr[min_index] % max_element) * max_element;
+            min_index++;
+
+        }
+    }
+
+    for(int i=0; i<n; i++)
+       arr[i] /= max_element;
+
+}
+
+
+public static void frequencyCountElements(int arr[], int n){
+
+    int count[] = new int[n+1];                       // Time Complexity : O(N)
+
+    for(int i=0; i<n; i++)                            // Auxiliary Space : O(1)
+       if(arr[i] <=n)
+          count[arr[i]]++;
+    
+    for(int i=1; i<=n; i++)
+       arr[i-1] = count[i];
+
+}
 
 
 
 
+public static void main(String args[]){
 
 
-
-
-
+}
     
 }
