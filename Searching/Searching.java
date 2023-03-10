@@ -1307,9 +1307,96 @@ public static void frequencyCountElements(int arr[], int n){
 
 
 
+public static void efenBeforeFromOdd(int arr[], int n){
+
+    int index = 0;
+
+    for(int i=0; i<n; i++){                          // Time Complexity : O(N)
+
+        if(arr[i] % 2 == 0){                         // Auxiliary Space : O(1)   
+
+            int temp = arr[i];                       // But that algorithm is not stabil
+            arr[i] = arr[index];
+            arr[index] = temp;
+
+            index++;
+
+        }
+    }
+
+}
+
+
+
+public static void stabilEvenBeforeFromOdd(int arr[], int n){
+
+    int index = 0;
+
+    for(int i=0; i<n; i++){                               // Time Complexity : O(N ** 2)
+
+        if( arr[i] % 2 == 0){                             // Auxiliary Space : O(1) 
+
+            for(int k = index; k<i; k++){                 //  that algorithm is stabil
+
+                int temp = arr[k];                       
+                arr[k] = arr[i];
+                arr[i] = temp;
+
+            }
+
+            index++;
+
+        }
+    }
+}
+
+
+
+
+public static void efficientStabilEvenBeforeFromOdd(int arr[], int n){
+
+    int tempArray[] = new int [n];
+
+    int theNumberOfEvenElements = 0;                                   // Time Complexity : O(N)
+
+    for(int i=0; i<n; i++)                                            // Auxiliary Space : O(N) 
+        if(arr[i] % 2 == 0)
+           theNumberOfEvenElements++;                                 //  that algorithm is stabil
+
+    
+    int indexOfEven = 0, indexOfOdd = theNumberOfEvenElements;
+
+    for(int i=0; i<n; i++){
+
+        if(arr[i] % 2 == 0){
+
+            tempArray[indexOfEven] = arr[i];
+            indexOfEven++;
+
+        }
+        else{
+
+            tempArray[indexOfOdd] = arr[i];
+            indexOfOdd++;
+
+        }
+    }
+
+     for(int i=0; i<n; i++)
+        arr[i] = tempArray[i];       
+        
+}
+
+
+
 
 public static void main(String args[]){
 
+    int arr[] = {2,1,4,5,6,9,8,7,8,9};
+
+    stabilEvenBeforeFromOdd(arr, arr.length);
+
+    System.out.println(Arrays.toString(arr));
 
 }
     
