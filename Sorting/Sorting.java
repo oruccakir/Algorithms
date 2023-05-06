@@ -1,6 +1,8 @@
 package Sorting;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 
 public class Sorting {
 
@@ -246,23 +248,281 @@ public class Sorting {
         }
     }
 
+    public static int [] merge(int arr1[],int arr2[]){
+
+        int arr[] = new int[arr1.length + arr2.length];        // Time Complexity : O(N)
     
+        int i=0, j=0, k=0;                                     // A uxiliary Space : O(N)
 
+        int n1 = arr1.length, n2 = arr2.length;
 
+        while( i< n1 && j<n2){
 
-    
-    public static void main(String[] args) {
+            if(arr1[i] <= arr2[j]) { arr[k] = arr1[i]; i++; k++; }
 
-        int arr[] = {1,8,9,7,4,5,1,2,4,8};
+            else { arr[k] = arr2[j]; j++; k++; }
 
-        mergeSort(arr, 0,arr.length-1);
-
-        System.out.println(Arrays.toString(arr));
+        }
         
+        while(i < n1){ arr[k] = arr1[i]; k++; i++;}
+
+        while(j< n2){ arr[k] = arr2[j]; k++; j++;}
+
+        return arr;
+
     }
+
+    public static int [] threeMerge(int arr1[], int arr2[], int arr3[]){
+
+        int arr[] = null;
+
+        arr = merge(arr1, arr2);                // Time Complexity : O(N)
+
+        arr = merge(arr, arr3);                // Auxiliary Space : O(N)
+
+        return arr;
+
+    }
+
+
+    public static void mergeWithoutAuxiliarySpace (int arr1[], int arr2[]){
+
+        int n = arr1.length, m = arr2.length, i=0, j=0, k = n-1;
+
+        int min = 0, index = 0;
+
+        while(i <n && j< m){                                               // Time Complexity : O(N)
+
+            boolean isAtBelow = false;                                     // Auxiliary Space : O(N)
+
+            if(arr1[i] <= arr2[j]) {  min = arr1[i]; i++; } 
+
+            else { min = arr2[j]; index = j; j++; isAtBelow = true; }
+
+            if(isAtBelow){
+
+                int temp = arr1[k];
+
+                arr1[k] = min;
+
+                arr2[index] = temp;
+
+                k--;
+            }
+
+        }
+
+        Arrays.sort(arr1);
+        Arrays.sort(arr2);
+
+    }
+
+    public static LinkedList<Integer> getUnion (int arr1[], int arr2[]){
+
+        LinkedList <Integer> list = new LinkedList<>();                     // Time Complexity : O(N)
+
+        int tempArray[] = merge(arr1, arr2);                                // Auxiliary Space : O(N)
+
+        for(int i=0; i<tempArray.length; i++){                              // it is significant to note that two arrays should be sorted
+
+            if( i == 0 || tempArray[i] != tempArray[i-1]) list.add(tempArray[i]);
+
+        }
+
+        return list;
+
+    }
+
+    public static LinkedList<Integer> efficientGetUnion(int arr1[], int arr2[]){
+
+        LinkedList <Integer> list = new LinkedList<>();                            // Time Complexity : O(N)
+
+        int n = arr1.length, m = arr2.length, i=0, j=0;                            // Auxiliary Space : O(N)
+
+        while(i < n && j< m){                                                      // it is significant to note that two arrays should be sorted
+
+            if(i > 0 && arr1[i] == arr1[i-1]){ i++; continue; }
+
+            if(j > 0 && arr2[j] == arr2[j-1]) { j++; continue; }
+            
+            if(arr1[i] < arr2[j]){  list.add(arr1[i]);  i++;  }
+
+            else if(arr2[j] < arr1[i]){  list.add(arr2[j]);  j++;  }
+
+            else{  list.add(arr1[i]);  i++;  j++;  }
+
+        }
+
+        while( i< n){
+
+            if( i> 0 && arr1[i] != arr1[i-1]){ list.add(arr1[i]);}
+
+            i++;
+            
+            
+        }
+
+        while( j< m){
+
+            if( j> 0 && arr2[j] != arr2[j-1]){ list.add(arr2[j]);}
+
+            j++;
+
+        }
+
+        return list;
+
+    }
+
+
+    public static int countInversions ( int arr[], int n){
+
+        int count = 0;
+
+        for(int i=0; i<n-1; i++){                             // Time Complexity : O(N * N)
+ 
+            for(int k= i+1; k<n; k++){                        // Auxiliary Space : O(1)
+
+                if(arr[i] > arr[k]) count++;
+
+            }
+
+        }
+
+        return count;
+
+    }
+
+
+    public static int countInversionMerge( int arr[], int l, int r){
+
+
+        int result = 0;
+
+        if(l<r){                                                  // Time Complexity : O(n*log(n))
+
+            int mid = l +(r-l)/2;                                 // Space Complexity : O(n)
+
+            result += countInversionMerge(arr, l, mid);
+
+            result += countInversionMerge(arr, mid+1, r);
+
+            result += countAndMerge(arr,l,mid,r);
+
+        }
+
+        return result;
+
+
+    }
+
+
+    public static int countAndMerge(int arr[], int l,int mid, int r){
+
+
+        int n1 = mid -l +1, n2 = r-mid, left[] = new int[n1], right[] = new int[n2];
+
+        for(int i=0; i<n1; i++) left[i] = arr[l+i];
+
+        for(int i=0; i<n2; i++) right[i] = arr[mid +1 +i];                         // Time Complexity : O(n*log(n))
+
+        int i=0, j=0, k=l, result = 0;                                             // Space Complexity : O(n)
+
+        while(i<n1 && j<n2){
+
+            if(left[i] <= right[j]) {
+
+                arr[k] = left[i];
+
+                i++;
+
+                k++;
+
+            }
+
+            else{
+
+                arr[k] = right[j];
+
+                j++;
+
+                result += n1-i;
+
+                k++;
+
+            }
+
+        }
+
+        while(i<n1) { arr[k] = left[i]; i++; k++; }
+
+        while(j<n2) { arr[k] = right[j]; j++; k++; }
+
+        return result;
+
+    }
+
+
+
+    public static boolean findTripletWithZero(int arr[], int n){
+
+        mergeSort(arr,0,n-1);
+
+        for(int i=0; i<n-2; i++){                              // Time Complexity : O(n*n)
+
+            int l = i+1, r=n-1;                                // Space Complexity : O(1)
+
+            while ( l< r){
+
+                int sum = arr[i] +arr[l] + arr[r];
+
+                if(sum == 0) return true;
+
+                else if(sum < 0) l++;
+
+                else r --;
+
+            }
+
+        }
+
+        return false;
+
+    }
+
+
+
+
+
+
+
+
+
+        public static void main(String[] args) {
+
+            int arr1[] = {1,5,15,2,3,2,1,8,9,5,2};
+    
+           
+            System.out.println(countInversionMerge(arr1,0,arr1.length-1));
+    
+            
+    
+            
+            
+        }
+
+
+    }
+
+    
+
+
+
+    
+   
 
 
    
 
     
-}
+
