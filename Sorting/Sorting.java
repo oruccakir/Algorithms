@@ -493,6 +493,96 @@ public class Sorting {
 
 
 
+    public static void partition(int arr[],int l,int r,int p){
+
+
+        int tempArray[] = new int[ r - l +1] ;              // Time Complexity : O(n)
+
+        int index = 0;                                      // Space Complexity : O(n)
+
+        for(int i=l; i<=r; i++) {                           // Stable algorithm but requires auxiliary space
+
+            if(arr[i] <= arr[p]){
+
+                tempArray[index] = arr[i];
+
+                index++;
+
+            }
+            
+        }
+
+        for(int i=l; i<=r; i++){
+
+            if(arr[i] > arr[p]){
+
+                tempArray[index] = arr[i];
+                
+                index++;
+
+            }
+
+        }
+
+        for(int i=l; i<=r; i++) arr[i] = tempArray[i];
+
+    }
+
+
+
+
+
+    public static int lomutoPartition (int arr[], int l,int r){
+
+        int pivot = arr[r];                                // always last element is picked as pivot in lomuto partition
+
+        int index = l-1;
+
+        for(int i=l; i<=r-1; i++){                        // Time Complexity : O(n);
+
+            if(arr[i]  < pivot){                          // Auxiliary space : O(n)
+
+                index++;                                  // Unstable algorithm
+
+                swap(arr, index, i);
+
+            }
+
+        }
+
+        swap(arr, index+1, r);                          // Last line is important because pivot is located at the end of the array
+
+        return index+1;
+
+    }
+
+
+
+
+
+    public static int hoaresPartition(int arr[], int l, int r){
+
+        int pivot = arr[l], i=l-1, j=r+1;            // pivot element is the first element of given parameter l
+
+        while(true){                                 // Time complexity : O(n)
+
+            do{ i++; } while(arr[i] < pivot);        // Auxiliary space : O(1)
+
+            do{ j--; } while(arr[j] > pivot);        // Unstable algortihm and works better than lomuto partition
+
+            if(i >= j) return j;
+
+            swap(arr, i, j);
+
+        }
+
+    }
+
+  
+
+
+
+
 
 
 
@@ -500,12 +590,13 @@ public class Sorting {
 
         public static void main(String[] args) {
 
-            int arr1[] = {1,5,15,2,3,2,1,8,9,5,2};
-    
-           
-            System.out.println(countInversionMerge(arr1,0,arr1.length-1));
+            int arr1[] = {5,15,2,3,2,1,8,9,2};
     
             
+           
+            System.out.println(hoaresPartition(arr1, 0, arr1.length-1));
+    
+            System.out.println(Arrays.toString(arr1));
     
             
             
