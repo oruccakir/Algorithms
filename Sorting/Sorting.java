@@ -3,6 +3,8 @@ package Sorting;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class Sorting {
 
@@ -559,6 +561,7 @@ public class Sorting {
 
 
 
+    
 
     public static int hoaresPartition(int arr[], int l, int r){
 
@@ -578,6 +581,100 @@ public class Sorting {
 
     }
 
+
+
+    /*
+     *  unstable algorithm 
+     *  divide and conquer algorithm
+     *  in-place algorithm
+     *  cache friendly
+     *  tail recursive
+     *  best case space complexity O(n*logn)
+     * 
+     *  despite O(N*N) time complexity in worst case it is considered faster because of above statements
+     */
+
+    public static void quickSortLomuto(int arr[], int l, int r){
+        
+        if(l < r){                                              // Time complexity in worst case O(N*N) in average case O(n*logn)
+
+            int p = lomutoPartition(arr, l, r);                 // due to recursion calls auxiliary space O(N)
+
+            quickSortLomuto(arr, l, p-1);                       
+            quickSortLomuto(arr, p+1, r);
+
+        }
+
+    }
+
+
+
+    /*
+     * Hoares partition is much faster three times than lomuto
+     */
+
+    public static void quickSortHoares(int arr[],int l,int r){
+
+        if(l < r){                                           // Time complexity in worst case O(N*N) in average case O(n*logn)
+
+            int p = hoaresPartition(arr, l, r);              // due to recursion calls auxiliary space O(N)
+
+            quickSortHoares(arr, l, p);
+            quickSortHoares(arr, p+1, r);
+
+        }
+
+    }
+
+
+
+
+
+    public static int kthSmallestElement(int arr[],int k){
+
+        int tempArray[] = new int[k];                      // Time complexity in worst case O(N*N) in average case O(n*logn)
+
+        quickSortHoares(arr, 0, arr.length-1);           // That code handles the problem of duplicate elements with O(N) auxiliary space
+
+        int index = 0;
+
+        boolean isEmpty = true;
+
+        for(int i=0; i<arr.length-1 && index <k; i++){
+
+            if(arr[i] != arr[i+1]) { isEmpty = false; tempArray[index] = arr[i]; index++; }
+
+        }
+ 
+        if(k > 0 && isEmpty == true  ) tempArray[0] = arr[0];
+
+        return tempArray[k-1];
+
+    }
+
+
+    
+
+    /*
+     * that code better implementation of above code
+     */
+
+    public static int kthSmallestElementWithHashing(int arr[],int k){
+
+        Set <Integer> set = new TreeSet<>();               // Time complexity : O(n*logn);
+
+        for(int i=0; i<arr.length; i++) set.add(arr[i]);   // Space complexity : O(n);
+
+        return (Integer) set.toArray()[k-1];   // by not using toArray but itertaing over set makes code more efficient
+
+    }
+
+
+
+
+
+
+
   
 
 
@@ -592,11 +689,7 @@ public class Sorting {
 
             int arr1[] = {5,15,2,3,2,1,8,9,2};
     
-            
-           
-            System.out.println(hoaresPartition(arr1, 0, arr1.length-1));
-    
-            System.out.println(Arrays.toString(arr1));
+            System.out.println(kthSmallestElementWithHashing(arr1, 3));
     
             
             
