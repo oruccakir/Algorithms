@@ -8,6 +8,7 @@ import java.util.TreeSet;
 
 public class Sorting {
 
+
     public static void swap(int arr[], int index1, int index2){
 
         int temp = arr[index1];
@@ -531,6 +532,11 @@ public class Sorting {
     }
 
 
+    /*
+     *  lomuto and hoares are not stable but they are in-place algorithm
+     *  Naive partition is stable but not in-place due to auxiliary space
+     */
+
 
 
 
@@ -668,6 +674,451 @@ public class Sorting {
         return (Integer) set.toArray()[k-1];   // by not using toArray but itertaing over set makes code more efficient
 
     }
+
+
+
+
+
+    public static void threePartition (int array[], int a, int b){
+
+        int n = array.length, start = 0, end = n-1, i =0;
+
+        while(i<=end){                                 // Time Complexity O(N)
+
+            if(array[i] < a){                          // Space Complexity O(1)
+
+                swap(array, i,start);
+
+                i++;
+
+                start++;
+
+            }
+            else if(array[i] > b){
+
+                swap(array, i,end);
+
+                i++;
+
+                end--;
+
+            }
+
+            else i++;
+
+        }
+
+    }
+
+
+
+
+
+    public static int minDifference (int arr[],int n){
+
+        if(n == 1) return arr[0];
+
+        quickSortHoares(arr, 0, n-1);                // Time complexity O(n*logn) (worst case O(N*N) because of quick sort )
+
+        int minDiffer = arr[1] - arr[0];               // Space Complexity : O(1)
+
+        for(int i=1; i<n-1; i++ ){
+
+            minDiffer = Math.min(minDiffer, arr[i+1] - arr[i]);
+
+        }
+
+        return minDiffer;
+
+    }
+
+
+
+
+    /*
+     * in binary sort all elememts of array consist of zero and one
+     */
+
+    public static void binarySort(int arr[], int n) {
+
+        int index = 0;
+
+        for(int i=0; i<n; i++){                       // Time Complexity : O(N)
+
+            if(arr[i] == 0){                          // Space Complexity : O(1)
+
+                swap(arr, i, index);
+
+                index++;
+
+            }
+
+        }
+
+    }
+
+
+
+
+
+    public static void segregate012(int arr[], int n){        // Time Comlexity : O(N)
+
+        int index = 0;                                        // Space Complexity : O(1)                           
+
+        for(int i=0; i<n; i++){
+
+            if(arr[i] == 0){
+
+                swap(arr, index, i);
+
+                index++;
+
+            }
+
+        }
+
+
+        for(int i= index; i<n; i++){
+
+            if(arr[i] == 1){
+
+                swap(arr, i, index);
+
+                index++;
+
+            }
+
+        }
+
+
+    }
+
+
+
+
+    /*
+     * By choosing random pivot time complexity O(n*logn) otherwise O(N*N)
+     */
+    
+    public static void tailQuickSort(int arr[], int l, int r){
+
+       // Begin :
+
+       if(l<r){                                  // because of tail recursion auxiliary space : O(N)
+
+        int b = lomutoPartition(arr, l, r);
+
+        tailQuickSort(arr, l, b);
+
+        l = b+1;
+
+        //goto begin;
+
+       }
+
+    }
+
+
+
+    /*
+     * By choosing random pivot time complexity O(n*logn) otherwise O(N*N)
+     */
+
+
+    public static int kthSmallestElementWithLomutoPartition ( int arr[], int k){
+
+        int low = 0, high = arr.length -1;
+
+        while(low <= high){
+
+            int p = lomutoPartition(arr, low, high);                   // Auxiliary Space : O(1)
+
+            if(p == k-1) return arr[p];
+
+            else if(p > k-1) high = p-1;
+
+            else low = p+1;
+
+        }
+
+        return -1;
+
+    }
+
+
+
+    
+    /*
+     * By choosing random pivot time complexity O(n*logn) otherwise O(N*N)
+     */
+
+
+    public static int kthSmallestElementRecursive ( int arr[], int k, int left, int right){
+
+        if( left > right) return -1;                                        // Space Complexity : O(N)
+
+        else{
+
+            int p = lomutoPartition(arr, left, right);
+
+           if(p == k-1) return p;
+
+           else if(p > k-1) return kthSmallestElementRecursive(arr, k, left, p-1);
+
+           else return kthSmallestElementRecursive(arr, k, p+1, right);
+
+        }
+        
+    }
+
+
+
+
+    /*
+     *  Time Complexity : O(N)
+     *  Space Complexity : O(1)
+     */
+
+    public static int minShareChocolate (int arr[], int m){
+
+        if( m > arr.length) return -1;
+
+        mergeSort(arr, 0, arr.length-1);                         
+
+        int minDiffer = arr[m-1] - arr[0];
+
+        for(int i=1; i + m < arr.length-1; i++) minDiffer = Math.min(minDiffer, arr[m + i -1 ] - arr[i]);
+
+        return minDiffer;
+
+    }
+
+
+
+    /*
+     *  Time Complexity : O(N)
+     *  Space Complexity : O(1)
+     */
+
+    public static void segregatePositiveNegative(int arr[], int n){
+
+        int i=-1, j = n;
+
+        while(true){
+
+            do { i++; } while (arr[i] < 0);
+
+            do { j--; } while (arr[j] >=0 );
+
+            if(i >= j) return;
+
+            swap(arr, j, i);
+
+        }
+
+    }
+
+
+
+    /*
+     *  Time Complexity : O(N)
+     *  Space Complexity : O(1)
+     */
+
+    public static void segregate012(int arr[]){
+
+        int low = 0, mid = 0, high = arr.length-1;        // That problem called as " Dutch national flag problem "
+
+        while( mid <= high){
+
+            if(arr[mid] == 0){
+
+                swap(arr, low, mid);
+
+                low++;
+                mid++;
+
+            }
+
+            else if(arr[mid] == 1) mid++;
+
+            else{
+
+                swap(arr, mid, high);
+
+                high--;
+
+            }
+
+        }
+
+    }
+
+
+
+    
+    static class Interval implements Comparable<Interval>{
+
+        public int end, start;
+
+        public Interval(int start,int end) { this.start = start; this.end = end;}
+
+        public int compareTo(Interval other){
+
+            return -1;         // including is not important
+
+        }
+
+    }
+
+    /*
+     *  Time Complexity : O(N*logN)
+     *  Space Complexity : O(1)
+     */
+
+    public static void mergeIntervals(Interval[] arr, int n){
+
+        Arrays.sort(arr);
+
+        int res = 0;
+
+        for(int i=1; i<n; i++){
+
+            if(arr[res].end >= arr[i].start){
+
+                arr[res].end = Math.max(arr[i].end, arr[res].end);
+
+                arr[res].start = Math.max(arr[i].start, arr[res].start);
+
+            }
+
+            else{
+
+                res++;
+
+                arr[res] = arr[i];
+
+            }
+
+        }
+
+        for(int i=0; i<=res; i++) System.out.println(arr[i].start +" "+arr[i].end);
+
+    } 
+
+
+
+    /*
+     *  Time Complexity : O(N*logN)
+     *  Space Complexity : O(1)
+     */
+
+     public static int maxGuests(int arr[], int dep[], int n){
+
+        Arrays.sort(arr);
+        Arrays.sort(dep);
+
+        int i=0, j=0, res=0, curr=0;
+
+        while( i<n && j<n){
+
+            if(arr[i] <= dep[j]) { curr++; i++;}
+
+            else { curr--; j++; }
+
+            res = Math.max(res, curr);
+
+        }
+
+        return res;
+
+     }
+
+
+
+     /*
+     *  Time Complexity : O(N*N)
+     *  Space Complexity : O(1)
+     */
+
+    public static void cycleSort(int arr[], int n){
+
+        int writes = 0;
+
+        for(int cycleStart = 0; cycleStart <= n-2; cycleStart++){
+
+            int item = arr[cycleStart], pos = cycleStart;
+
+            for(int i= cycleStart+1; i<n; i++) if(arr[i] < item) pos++;
+
+            if(pos == cycleStart) continue;
+
+            while(item == arr[pos]) pos++;
+
+            if(pos != cycleStart){
+
+                int temp = item;
+                item = arr[pos];
+                arr[pos] = temp;
+                writes++;
+
+            }
+
+            while (pos != cycleStart){
+
+                pos = cycleStart;
+
+                for(int i= cycleStart+1; i<n; i++) if(arr[i] < item) pos++;
+
+                if(item != arr[pos]){
+
+                 int temp = item;
+                 item = arr[pos];
+                 arr[pos] = temp;
+                 writes++;
+
+                }
+
+            }
+            
+
+        }
+
+    }
+
+
+
+    /*
+     *  Time Complexity : O(N*logN)
+     *  Space Complexity : O(N)
+     */
+
+    public static void sortABS (int arr[], int n, int k){
+
+        class Point implements Comparable<Point>{
+
+
+
+            public int compareTo(Point p){
+
+                return -1;
+
+            }
+
+        }
+
+    }
+
+    
+
+
+
+
+
+
+
+
+    
 
 
 
