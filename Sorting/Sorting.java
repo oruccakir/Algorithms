@@ -2,9 +2,12 @@ package Sorting;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.Vector;
 
 public class Sorting {
 
@@ -1097,11 +1100,222 @@ public class Sorting {
 
         class Point implements Comparable<Point>{
 
+            int num = 0;
 
+            public Point(int num) { this.num = num; }
 
             public int compareTo(Point p){
 
-                return -1;
+                if( Math.abs(num - k)< Math.abs(p.num - k )) return -1;
+
+                else if( Math.abs(num - k) > Math.abs(p.num - k )) return 1;
+
+                else return 0;
+
+            }
+
+        }
+
+        Point temp[] = new Point[n];
+
+        for(int i=0; i<n; i++) temp[i] = new Point(arr[i]);
+
+        Arrays.sort(temp);
+
+        for(int i=0; i<n; i++) arr[i] = temp[i].num;
+
+    }
+
+
+
+    /*
+     *  Time Complexity : O(N*logN)
+     *  Space Complexity : O(N)
+     */
+
+    public static int closer(int arr[], int n, int x){
+
+        return binarySearch(arr,0,n-1,x);
+
+    }
+
+    /*
+     *  Time Complexity : O(N*logN)
+     *  Space Complexity : O(N)
+     */
+
+    public static int binarySearch(int []arr, int l, int r, int x){
+
+        if( l > r) return -1;
+
+        int mid = l +( r - l ) / 2;
+
+        if(arr[mid] == x) return mid;
+
+        if(mid >l && arr[mid-1] == x) return mid-1;
+
+        if(mid <r && arr[mid+1] == x) return mid+1;
+
+        if(arr[mid] > x) return binarySearch(arr, l, mid-2, x);
+
+        if(arr[mid] < x) return binarySearch(arr, mid+2, r, x);
+
+        return -1;
+
+    }
+
+
+
+    /*
+     *  Time Complexity : O(N*N)
+     *  Space Complexity : O(N)
+     */
+
+    public static int findNumberOfPossibleTriangles(int arr[], int n){
+
+        int count = 0;
+
+        int temp[] = new int[n];
+
+        Arrays.sort(arr);
+
+        for(int i=n-1; i>=0; i--) temp[n-i-1] = arr[i];
+
+        for(int i=0; i<n-2; i++){
+
+            int l = i+1, r=n-1;
+
+            while(l < r){
+
+                if(temp[l] + temp[r] <= temp[i]) r--;
+
+                else{
+
+                    count += (r-l);
+
+                    l++;
+
+                }
+
+            }
+
+        }
+
+        return count;
+
+    }
+
+
+
+    /*
+     *  Time Complexity : O(N*N)
+     *  Space Complexity : O(1)
+     */
+
+    public static int findNumberOfTriangles(int arr[], int n){
+
+        int count = 0;
+
+        Arrays.sort(arr);
+
+        for(int i=n-1; i>=2; i--){
+
+            int l=0, r=i-1;
+
+            while( l < r){
+
+                if(arr[r] + arr[l] <arr[i]) r--;
+
+                else{
+
+                    count += (r-l);
+
+                    l++;
+
+                }
+
+
+            }
+
+        }
+
+        return count;
+
+    }
+
+
+
+    /*
+     *  Time Complexity : O(logn)
+     *  Space Complexity : O(logn)
+     */
+
+    public static void heapify(int arr[], int n, int i){
+
+        int largest = i, l= 2*i+1, r= 2*i +2;
+
+        if(l<n && arr[l] > arr[largest] ) largest = l;
+
+        if(r<n && arr[r] > arr[largest] ) largest = r;
+
+        if(largest != i){
+
+            swap(arr, i, largest);
+
+            heapify(arr, n, largest);
+
+        }
+
+    }
+
+
+
+    /*
+     *  Time Complexity : O(N*logN)
+     *  Space Complexity : O(1)
+     */
+
+    public static void heapSort(int arr[], int n){
+
+        for(int i= n / 2 -1; i>=0; i--) heapify(arr, n, i);
+
+        for(int i=n-1; i>=0; i--){
+
+            swap(arr, 0, i);
+
+            heapify(arr, i, 0);
+
+        }
+
+    }
+
+
+
+    /*
+     *  Time Complexity : O(N +K)
+     *  Space Complexity : O(K)
+     * 
+     *  K is the range of input
+     * 
+     *  naive solution can not be applied for object data types
+     * 
+     */
+
+    public static void countingSortNaive(int arr[], int n, int k){
+
+        int count[] = new int[k];
+
+        for(int i=0; i<n; i++) count[arr[i]]++;
+
+        int index = 0;
+
+        for(int i=0; i<k; i++){
+
+            for(int j=0; j<count[i]; j++){
+
+                arr[index] = i;
+
+                index++;
 
             }
 
@@ -1109,6 +1323,251 @@ public class Sorting {
 
     }
 
+
+
+    /*
+     *  Time Complexity : O(N*N)
+     *  Space Complexity : O(N)
+     * 
+     * That is general purpose implementation
+     * 
+     * Counting sort is not a comparison based algorithm
+     * it is stable and uses as a subroutine in radix sort 
+     * 
+     */
+
+    public static void countSort(int arr[], int n, int k){
+
+        int count[] = new int[k];
+
+        for(int i=0; i<n; i++) count[arr[i]]++;
+
+        for(int i=1; i<k; i++) count[i] += count[i-1];
+
+        int output[] = new int[n];
+
+        for(int i=n-1; i>=0; i--){
+
+            output[count[arr[i]] -1] = arr[i];
+
+            count[arr[i]]--;
+
+        }
+
+        for(int i=0; i<n; i++) arr[i] = output[i];
+
+    }
+
+
+
+    /*
+     * Time Complexity : O(N*LogN)
+     * Auxiliary Space : O(N)
+     * 
+     * This is not a counting sort solution
+     * 
+     */
+
+    public static String sortString(String arr){
+
+        int n = arr.length();
+
+        char[] temp = arr.toCharArray();
+
+        Arrays.sort(temp);
+
+        StringBuilder str = new StringBuilder("");
+
+        for(int i=0; i<n; i++) str.append(temp[i]);
+
+        return new String(str);
+
+    }
+
+
+
+    /*
+     *  Time Complexity : O(N*N)
+     *  Space Complexity : O(N)
+     */
+
+    public static String countSortString(String arr){
+
+        int n = arr.length();
+
+        char max = arr.charAt(0);
+
+        for(int i=1; i<n; i++) max = (char) (Math.max((int)max, (int)arr.charAt(i)));
+
+        int countLen = (int) max - 97 + 1;
+
+        int count[] = new int[countLen];
+
+        for(int i=0; i<n; i++) count[(int)arr.charAt(i)-97]++;
+
+        StringBuilder str = new StringBuilder("");
+
+        for(int i=0; i<countLen; i++){
+
+            for(int j=0; j<count[i]; j++) str.append((char)(i+97));
+
+        }
+
+        return str.toString();
+
+    }
+
+
+
+    /*
+     *  Time Complexity : O(N*N)
+     *  Space Complexity : O(N)
+     */
+
+    public static String countStringSort(String arr){
+
+        char seq[] = arr.toCharArray();
+
+        int n = seq.length;
+
+        char[] output = new char[n];
+
+        int count[] = new int[256];
+
+        for(int i=0; i<n; i++) count[seq[i]]++;
+
+        for(int i=1; i<= 255; i++) count[i] += count[i-1];
+
+        for(int i=0; i<n; i++){
+
+            output[count[seq[i]]-1] = seq[i];
+
+            count[seq[i]]--;
+
+        } 
+
+        for(int i=0; i<n; i++) seq[i] = output[i];
+
+        StringBuilder s = new StringBuilder("");
+
+        for(int i=0; i<n; i++) s.append(seq[i]);
+
+        return s.toString();
+
+    }
+
+
+
+    /*
+     *  Time Complexity : O(N + base)
+     *  Space Complexity : O(N + base)
+     */
+
+    public static void countSortRadix(int arr[], int n, int exp){
+
+        int output[] = new int[n], count[] = new int[10];
+
+        for(int i=0; i<n; i++) count[arr[i] / exp % 10] ++;
+
+        for(int i=1; i<10; i++) count[i] += count[i-1];
+
+        for(int k= n-1; k>=0; k--){
+
+            output[count[arr[k] / exp % 10 ]] = arr[k];
+            
+            count[arr[k] / exp % 10 ] --;
+
+        }
+
+        for(int i=0; i<n; i++) arr[i] = output[i];
+
+    }
+
+
+
+    /*
+     *  Time Complexity : O( d* (N + base))
+     *  Space Complexity : O(N + base)
+     * 
+     *  d : log maxValue base 
+     * 
+     */
+
+    public static void radixSort(int arr[],int n){
+
+        int max = Integer.MIN_VALUE;
+
+        for(int i=0; i<n; i++) max = Math.max(max, arr[i]);
+
+        for(int exp = 1; max / exp > 0; exp*=10) countSortRadix(arr, n, exp);
+
+    }
+
+
+
+    /*
+     *  Time Complexity : O(N)
+     *  Space Complexity : O(N)
+     */
+
+    public static void bucketSort(int arr[], int n){
+
+        if(n<=0) return;
+
+        Vector<Integer>[] buckets = new Vector[n];
+
+        for(int i=0; i<n; i++) buckets[i] = new Vector<Integer>();
+
+        for(int i=0; i<n; i++){
+
+            int idx = arr[i] * n;
+
+            buckets[idx].add(arr[i]);
+
+        }
+
+        for(int i=0; i<n; i++) Collections.sort(buckets[i]);
+
+        int index = 0;
+
+        for(int i=0; i<n; i++){
+
+            for(int j=0; j<buckets[i].size(); j++) arr[index++] = buckets[i].get(j);
+
+        }
+
+
+    }
+
+    /*
+     * Note : 
+     * 
+     * if all buckets have the same number of elements Time Complexity : O(N)
+     * 
+     * if all items go into a single bucket if we use insertion sort Time Complexity : O(N*N)
+     * 
+     * In place of insertion sort If we were used O(n*logn) algortihm such as merge sort
+     * Time Complexity : O(N*LogN)
+     * 
+     */
+
+    
+
+
+
+    
+
+
+
+
+
+
+
+    
+
+
+
+    
     
 
 
