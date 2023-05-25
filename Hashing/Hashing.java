@@ -186,18 +186,7 @@ public class Hashing{
 
     public static void main(String[] args) {
         
-        int arr[] = {1,5,5,5,9,6,7,
-            1,9,12,12};
-
-        writeDistinctElements(arr, arr.length);
-
-        System.out.println(isPairSum(arr, arr.length,24));
-
-        System.out.println(checkTwoArraysContents(arr, arr.clone()));
-
-        printNonRepeatedElements(arr);
-
-        System.out.println(countNonRepeatedElements(arr));
+       
 
     }
 
