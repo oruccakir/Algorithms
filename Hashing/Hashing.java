@@ -165,6 +165,53 @@ public class Hashing{
 
 
 
+    /*
+     * Time Complexity : O(N)
+     * Auxiliary Space : O(N)
+     */
+
+    public static int numberOfElementsIntersection(int a[], int b[]){
+
+        HashSet<Integer> set1 = new HashSet<>();
+        HashSet<Integer> set2 = new HashSet<>();
+
+        for(int i=0; i<a.length; i++) set1.add(a[i]);
+
+        for(int i=0; i<b.length; i++) set2.add(b[i]);
+
+        set1.retainAll(set2);
+
+        return set1.size();
+
+    }
+
+
+
+    /*
+     * Time Complexity : O(N)
+     * Auxiliary Space : O(N)
+     */
+
+    public static int unionOfArrays(int a[], int b[]){
+
+        HashSet<Integer> set1 = new HashSet<>();
+        HashSet<Integer> set2 = new HashSet<>();
+
+        for(int i=0; i<a.length; i++) set1.add(a[i]);
+
+        for(int i=0; i<b.length; i++) set2.add(b[i]);
+
+        set1.addAll(set2);
+
+        return set1.size();
+
+    }
+
+
+
+
+
+
 
 
 
