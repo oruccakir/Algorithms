@@ -1,8 +1,23 @@
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeSet;
+import java.util.Comparator;
+
+import javax.xml.transform.Templates;
+
+import java.util.Iterator;
+
+
 
 public class Hashing{
 
@@ -206,6 +221,210 @@ public class Hashing{
         return set1.size();
 
     }
+
+
+    /*
+     * Time Complexity : O(NlogN)
+     * Auxiliary Space : O(N)
+     */
+
+    public static int[] sortA1ByA2(int []a1, int []a2){
+
+        HashSet<Integer> set = new LinkedHashSet<>();
+
+        Map<Integer,Integer> map = new LinkedHashMap<>();
+
+        for(Integer i : a2) set.add(i);
+
+        int arr[] = new int[a1.length];
+
+        for(int i=0; i<a1.length; i++){
+
+            if(map.get(arr[i]) == null) map.put(arr[i], 1);
+
+            else map.put(a1[i], map.get(arr[i]+1);
+
+        }
+
+        Iterator<Integer> itr = set.iterator();
+
+        int index = 0, count = 0;
+
+        while(itr.hasNext()){
+
+            int goal = (Integer) itr.next(), loop = 0;
+
+            if(map.get(goal) != null) loop = map.get(goal);
+
+            for(int i=0; i<loop; i++){
+
+                arr[index] = goal;
+
+                index++;
+
+            }
+
+        }
+
+        for(int i=0; i<a1.length; i++){
+
+            if(!set.contains(a1[i])){
+
+                arr[index] = a1[i];
+
+                index++;
+
+            }
+
+        }
+
+        Arrays.sort(arr,a1.length-count,a1.length);
+
+        return arr;
+
+    }
+
+
+
+    /*
+     * Time Complexity : O(NlogN)
+     * Auxiliary Space : O(N)
+     */
+
+    public static ArrayList<Integer> sortByFrequency(int arr[]){
+
+        class Point implements Comparable<Point>{
+
+            int freq,value;
+
+            public Point(int f, int v){ freq = f; value = v;}
+
+            @Override
+            public int compareTo(Point o) {
+
+                if(this.freq > o.freq) return -1;
+
+                else if(this.freq < o.freq) return 1;
+
+                else{
+
+                    if(this.value < o.value) return -1;
+
+                    if(this.value > o.value) return 1;
+
+                    else return 0;
+
+                }
+
+            }
+        }
+
+        ArrayList<Integer> list = new ArrayList<>();
+
+        HashMap<Integer,Integer> map = new HashMap<>();
+
+        TreeSet<Point> set = new TreeSet<>();
+
+        for(int i=0; i<arr.length; i++){
+
+            if(map.get(arr[i]) == null) map.put(arr[i], 1);
+
+            else map.put(arr[i], map.get(arr[i])+1);
+
+        }
+
+        Point [] p_array = new Point[arr.length];
+
+        for(int i=0; i<arr.length; i++){
+
+            p_array[i] = new Point(map.get(arr[i]),arr[i]);
+
+            set.add(p_array[i]);
+
+        }
+
+        for(Point p : p_array){
+
+            for(int i=0; i<p.freq; i++){
+
+                list.add(p.value);
+
+            }
+
+        }
+
+        return list;
+
+    }
+
+
+
+
+    /*
+     * Time Complexity : O(NlogN)
+     * Auxiliary Space : O(N)
+     */
+
+    static class comparator implements Comparator<Map.Entry<Integer,Integer>>{
+
+        @Override
+        public int compare(Entry<Integer, Integer> o1, Entry<Integer, Integer> o2) {
+            
+            if(o1.getValue() > o2.getValue()) return -1;
+
+            else if(o1.getValue() == o2.getValue()){
+
+                if(o2.getKey() < o1.getKey()) return 1;
+
+                else return -1;
+
+            }
+
+            else return 1;
+
+        }
+  
+    }
+
+
+    public static ArrayList<Integer> sortByFrequencyEfficient(int arr[]){
+
+        HashMap<Integer,Integer> map = new HashMap<>();
+
+        for(int i=0; i<arr.length; i++){
+
+            if(map.get(arr[i]) == null) map.put(arr[i], 1);
+
+            else map.put(arr[i], map.get(arr[i])+1);
+
+        }
+
+        List<Map.Entry<Integer,Integer>> set = new ArrayList<>(map.entrySet());
+
+        Collections.sort(set,new comparator());
+
+        ArrayList<Integer> list = new ArrayList<>();
+
+        for(int i=0; i<map.size(); i++){
+
+            int count = set.get(i).getValue();
+
+            while(count >=0){
+
+                list.add(set.get(i).getKey());
+
+                count--;
+
+            }
+
+        }
+
+        return list;
+
+    }
+
+
+
 
 
 
