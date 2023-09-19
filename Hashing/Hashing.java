@@ -242,7 +242,7 @@ public class Hashing{
 
             if(map.get(arr[i]) == null) map.put(arr[i], 1);
 
-            else map.put(a1[i], map.get(arr[i]+1);
+            else map.put(a1[i], map.get(arr[i]+1));
 
         }
 
@@ -422,6 +422,172 @@ public class Hashing{
         return list;
 
     }
+
+
+
+    /*
+        Time Complexity : O(N)
+        Auxiliary Space : O(N)
+    */
+
+    public static boolean subArrayWithZero(int arr[],int n){
+
+        int prefix_sum = 0;
+
+        HashSet<Integer> set = new HashSet<>();
+
+        for(int i=0; i<n; i++){
+
+            prefix_sum += arr[i];
+
+            if(prefix_sum == 0) return true;
+
+            if(set.contains(prefix_sum)) return true;
+
+            set.add(prefix_sum);
+
+        }
+
+        return false;
+
+    }
+
+
+     /*
+        Time Complexity : O(N)
+        Auxiliary Space : O(N)
+    */
+
+    public static boolean isSum(int arr[],int sum,int n){
+
+        int prefix_sum = 0;
+
+        HashSet<Integer> set = new HashSet<>();
+
+        for(int i=0; i<n; i++){
+
+            prefix_sum += arr[i];
+
+            if(prefix_sum == sum) return true;
+
+            if(set.contains(prefix_sum-arr[i])) return true;
+
+            set.add(prefix_sum);
+
+        }
+
+        return false;
+
+    }
+
+
+
+
+    /*
+        Time Complexity : O(N*N)
+        Auxiliary Space : O(N)
+    */
+
+    public static int largestSubArrayWithGivenSum(int arr[],int sum,int n){
+
+        int current_sum = 0;
+        int result = 0;
+
+        for(int i=0; i<n; i++){
+
+            for(int k = i; k<n; k++){
+
+                current_sum += arr[i];
+
+                if(current_sum == sum)
+                    result = Math.max(result,k-i+1);
+                
+
+            }
+
+        }
+
+        return result;
+
+    }
+
+
+    /*
+        Time Complexity : O(N*N)
+        Auxiliary Space : O(N)
+    */
+
+    public static int efficientLargestSubArrayWithGivenSum(int arr[],int sum,int n){
+
+        HashMap<Integer,Integer> map = new HashMap<>();
+
+        int prefix_sum = 0, max = 0;
+
+        for(int i=0; i<n; i++){
+
+            prefix_sum += arr[i];
+
+            if(prefix_sum == sum)
+                max = i+1;
+
+            if(!map.containsKey(prefix_sum))
+                map.put(prefix_sum, i);
+
+            if(map.containsKey(prefix_sum - sum))
+                max = Math.max(max, i-map.get(prefix_sum-sum));
+
+        }
+
+        return max;
+
+    }
+
+
+
+    /*
+        Time Complexity : O(N)
+        Auxiliary Space : O(N)
+    */
+    
+
+    public static boolean isSumThere(int arr[], int sum, int n){
+
+        int current_sum = arr[0], start = 0, i=0;
+
+        for(i=1; i<=n; i++){
+
+            while(current_sum > sum && start<i-1){
+
+                current_sum = current_sum - arr[i];
+
+                start++;
+
+            }
+
+            if(current_sum == sum){
+                System.out.println(" "+start+" "+(i-1));
+                return true;
+            }
+
+            if(i<n) current_sum+=arr[i];
+
+        }
+
+        return false;
+
+    }
+
+
+
+    
+
+
+
+
+
+
+
+
 
 
 
