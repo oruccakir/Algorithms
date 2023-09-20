@@ -1,4 +1,5 @@
 
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -546,7 +547,7 @@ public class Hashing{
 
     /*
         Time Complexity : O(N)
-        Auxiliary Space : O(N)
+        Auxiliary Space : O(1)
     */
     
 
@@ -576,6 +577,177 @@ public class Hashing{
         return false;
 
     }
+
+
+    /*
+        Time Complexity : O(N*N)
+        Auxiliary Space : O(1)
+    */
+
+
+    // Array consists of zeros and ones
+
+    public static int largestSubarrayEqualZeroandOne(int arr[], int n){
+
+        int result = 0, count_one = 0, count_zero = 0;
+
+        for(int i=0; i<n; i++){
+
+            for(int k=i; k<n; k++){
+
+                if(arr[k] == 0)
+                    count_zero++;
+                else
+                    count_one++;
+
+                if(count_one == count_zero)
+                    result = Math.max(result,count_one+count_zero);
+
+            }
+
+        }
+
+        return result;
+
+    }
+
+
+
+    /*
+        Time Complexity : O(N)
+        Auxiliary Space : O(N)
+    */
+
+    // Array consists of zeros and ones
+
+    public static int efficientLargestSubarrayEqualZoreOne(int arr[],int n){
+
+        for(int i=0; i<n; i++)
+            if(arr[i] == 0)
+                arr[i] = -1;
+        
+        int prefix_sum = 0, count = 0;
+
+        Map<Integer,Integer> map = new HashMap<>();
+
+        for(int i=0; i<n; i++){
+
+            prefix_sum += arr[i];
+
+            if(prefix_sum == 0) count = i+1;
+
+            if(!map.containsKey(prefix_sum))
+                map.put(prefix_sum,i);
+            else
+                count = Math.max(count, i-map.get(prefix_sum));
+
+        }
+
+        return count;
+
+    }
+
+
+
+    /*
+        Time Complexity : O(N*N)
+        Auxiliary Space : O(1)
+    */
+
+
+    public static int maxCommonSubarrayBinary(int arr1[], int arr2[]){
+
+        int n = arr1.length; // equal to the length of arr2
+
+        int result = 0;
+
+        for(int i=0; i<n; i++){
+
+            int sum1 = 0, sum2 = 0;
+
+            for(int k=i; k<n; k++){
+
+                sum1+=arr1[k];
+
+                sum2+=arr2[k];
+
+                if(sum1 == sum2)
+                    result = Math.max(result,k-i+1);
+
+            }
+
+
+        }
+
+        return result;
+
+    }
+
+
+
+    /*
+        Time Complexity : O(N)
+        Auxiliary Space : O(N)
+    */
+
+    public static int efficientMaxCommonSubarrayBinary(int arr1[], int arr2[]){
+
+        int temp[] = new int[arr1.length];
+
+        for(int i=0; i<temp.length; i++)
+            temp[i] = arr1[i]-arr2[i];
+        
+        return efficientLargestSubArrayWithGivenSum(temp,0,temp.length);
+
+    }
+
+
+    /*
+        Time Complexity : O(N*logN)
+        Auxiliary Space : O(1)
+    */
+
+    public static int largestSubsequence(int arr[],int n){
+
+        Arrays.sort(arr);
+
+        int max = 1, count = 1;
+
+        for(int i=1; i<n; i++){
+
+            if(arr[i] == arr[i-1]+1) count++;
+
+            else if(arr[i] != arr[i-1]){
+
+                max = Math.max(count,max);
+
+                count=1;
+
+            }
+
+        }
+
+        return Math.max(max, count); // for last subarray control
+
+    }
+
+    
+
+
+
+
+
+
+
+    
+
+
+    
+
+
+
+
+
 
 
 
