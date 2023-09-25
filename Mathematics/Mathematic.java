@@ -284,5 +284,28 @@ public class Mathematic {
         return result;
     }
 
+
+    // Time Complexity : O(log(n))
+    // Auxiliary Space : O(log(n))
+
+    public static in modPower(int base,int pow,int mod){
+
+        if(pow == 1)
+            return base % mod;
+        
+        else if(pow % 2 == 0){
+
+            int k = modPower(base,pow/2,mod) % mod;
+
+            return k*k;
+
+        } 
+
+        else{
+            return (modPower(base,pow/2,mod) % mod) * (modPower(base,pow/2,mod) % mod) % mod;
+        }
+
+    }
+
     
 }
