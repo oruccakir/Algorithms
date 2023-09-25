@@ -10,6 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Map.Entry;
 import java.util.TreeSet;
 import java.util.Comparator;
@@ -730,6 +731,61 @@ public class Hashing{
         return Math.max(max, count); // for last subarray control
 
     }
+
+
+    /*
+        Time Complexity : O(N)
+        Auxiliary Space : O(N)
+    */
+
+
+    public static int efficientLargestSubsequence(int arr[],int n){
+
+        Set<Integer> h_set = new HashSet<>();
+
+        for(int i=0; i<n; i++)
+            h_set.add(arr[i]);
+        
+        int result = 1;
+
+        for (Integer x : h_set){
+
+            if(h_set.contains(x-1) == false){
+
+                int current = 1;
+
+                while(h_set.contains(x+current))
+                    current++;
+                
+                result = Math.max(current, result);
+
+            }
+
+        }
+        
+        return result;
+
+    }
+
+
+    /*
+        Time Complexity : O(N)
+        Auxiliary Space : O(N)
+    */
+
+
+    public static ArrayList<Integer> countDistinctWindow(int arr[],int k){
+
+        ArrayList<Integer> arrayList = new ArrayList<>();
+
+        HashMap<Integer,Integer> map = new HashMap<>();
+
+        for(int i=0; i<k; i++)
+            map.put()
+
+    }
+
+
 
     
 
