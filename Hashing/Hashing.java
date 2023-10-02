@@ -875,6 +875,40 @@ public class Hashing{
 
 
 
+    /*
+        Time Complexity : O(N)
+        Auxiliary Space : O(N)
+    */
+
+    
+    public static int counSubarraySum(int arr[],int n, int sum){
+
+        Map<Integer,Integer> map = new HashMap<>();
+
+        int prefix_sum = 0, count=0;
+
+        for(int i=0; i<n; i++){
+
+            prefix_sum += arr[i];
+
+            if(prefix_sum == sum)
+                count++;
+            
+            if(map.containsKey(prefix_sum-sum))
+                count += map.get(prefix_sum-sum);
+
+            map.put(prefix_sum, map.getOrDefault(prefix_sum,0)+1);
+
+        }
+
+        return count;
+
+    }
+
+
+
+
+
 
 
 
