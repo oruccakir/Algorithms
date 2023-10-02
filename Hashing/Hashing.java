@@ -781,9 +781,100 @@ public class Hashing{
         HashMap<Integer,Integer> map = new HashMap<>();
 
         for(int i=0; i<k; i++)
-            map.put()
+            map.put(arr[i],map.getOrDefault(arr[i], 0)+1);
+        
+        arrayList.add(map.size());
+
+        for(int i=k; i<arr.length; i++){
+            
+            if(map.get(arr[i-k]) == 1) 
+                map.remove(arr[i-k]);
+            else
+                map.put(arr[i-k], map.get(arr[i-k])-1);
+            
+            map.put(arr[i-k], map.getOrDefault(arr[i], 0)+1);
+
+            arrayList.add(map.size());
+        
+        }
+
+        return arrayList;
 
     }
+
+
+
+    /*
+        Time Complexity : O(N)
+        Auxiliary Space : O(N)
+    */
+
+
+    public static void printNByK(int arr[],int k){
+
+        HashMap<Integer,Integer> map = new HashMap<>();
+
+        for(int key : arr)
+            map.put(key, map.getOrDefault(key, 0)+1);
+
+        for(Map.Entry<Integer,Integer> item : map.entrySet())
+            if(item.getValue() > arr.length / k)
+                System.out.print(item.getKey()+" ");
+        
+    }
+
+
+
+    /*
+        Time Complexity : O(N)
+        Auxiliary Space : O(N)
+    */
+
+
+    public static int findNumberZeroSum(int arr[],int n){
+
+        Map<Integer,Integer> map = new HashMap<>();
+
+        int prefix_sum = 0, count = 0;
+
+        for(int i=0; i<n; i++){
+
+            prefix_sum += arr[i];
+
+            if(prefix_sum == 0)
+                count++;
+
+            if(map.containsKey(prefix_sum))
+                count += map.get(prefix_sum);
+            
+            map.put(prefix_sum, map.getOrDefault(prefix_sum,0)+1);
+            
+        }
+
+        return count;
+    }
+
+
+
+    /*
+        Time Complexity : O(N)
+        Auxiliary Space : O(N)
+    */
+
+
+    public static int countSubarrWithEqualZeroAndOne(int arr[],int n){
+        
+        for(int i=0; i<n; i++)
+            if(arr[i] == 0) arr[i] = -1;
+
+        return findNumberZeroSum(arr, n);
+
+    }
+
+
+
+
+
 
 
 
