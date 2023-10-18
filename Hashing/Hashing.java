@@ -907,6 +907,170 @@ public class Hashing{
 
 
 
+    /*
+        Time Complexity : O(N)
+        Auxiliary Space : O(N)
+    */
+
+    public static int findLargestConseqSubseq(int arr[],int n){
+
+        HashSet<Integer> set = new HashSet<>();
+
+        for(int i=0; i<n; i++)
+            set.add(arr[i]);
+
+        Iterator<Integer> it = set.iterator();
+
+        int count = 1, result = 1;
+
+        while(it.hasNext()){
+
+            int goal = it.next();
+
+            if(set.contains(goal+1))
+                count++;
+            
+            else{
+
+                result = Math.max(result, count);
+
+                count = 1;
+
+            }
+
+        }
+
+        return Math.max(result, count);
+
+    }
+
+
+    /*
+        Time Complexity : O(N)
+        Auxiliary Space : O(N)
+    */
+
+    public static int findLargestConseqSubseqwithArray(int arr[],int n){
+
+        int arr2[] = new int[1000001];
+        
+        int count = 0, maximum = -1, max = Integer.MIN_VALUE;
+
+        for(int i=0; i<n; i++){
+
+            arr2[arr[i]]++;
+
+            maximum = Math.max(maximum, arr[i]);
+
+        }
+
+        for(int i=0; i<=maximum; i++){
+
+            if(arr2[i] >= 1)
+                count++;
+            else{
+
+                max = Math.max(max, count);
+
+                count = 0;
+
+            }
+
+        }
+
+        return Math.max(max, count);
+
+    }
+
+
+
+    /*
+        Time Complexity : O(N)
+        Auxiliary Space : O(N)
+    */
+
+    public static ArrayList<Integer> findPairs(int arr[], int n){
+
+        ArrayList<Integer> array = new ArrayList<>();
+
+        Set<Integer> set = new HashSet<>();
+
+        for(int i=0; i<n; i++){
+
+            if(set.contains(Math.abs(arr[i]))){
+
+                array.add(-Math.abs(arr[i]));
+                
+                array.add(Math.abs(arr[i]));
+
+            }
+
+            else
+                set.add(Math.abs(arr[i]));
+
+        }
+
+        return array;
+
+    }
+
+
+
+    /*
+        Time Complexity : O(logN)
+        Auxiliary Space : O(N)
+    */
+
+
+    public static boolean isConsist123(int number){
+
+        boolean condition = true;
+
+        int digit = 0;
+
+        do {
+
+            digit = number % 10;
+
+            if(digit != 1 && digit !=2 && digit !=3)
+                condition = false;
+
+            number /= 10;
+            
+        }while(condition && number != 0);
+
+        return condition;
+
+    }
+
+
+    
+
+    /*
+        Time Complexity : O(logN)
+        Auxiliary Space : O(N)
+    */
+
+
+    public static boolean isConsist123Recursive(int number){
+
+        if(number < 10)
+
+            return number == 1 || number == 2 || number == 3;
+        
+        int digit = number % 10;
+
+        boolean condition = digit == 1 || digit == 2 || digit == 3;
+
+        return condition && isConsist123Recursive(number / 10);
+        
+    }
+
+
+
+
+
+
 
 
 
