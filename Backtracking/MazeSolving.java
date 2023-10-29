@@ -1,6 +1,5 @@
 import java.util.HashMap;
 
-import javax.print.DocFlavor.INPUT_STREAM;
 
 public class MazeSolving{
 
