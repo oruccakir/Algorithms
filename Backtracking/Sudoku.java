@@ -122,7 +122,7 @@ public class Sudoku {
     }
 
     public static void main(String[] args) {
-
+/*
         // Define a Sudoku puzzle with some pre-filled values
         int[][] sudoku = { { 3, 0, 6, 5, 0, 8, 4, 0, 0 },
         { 5, 2, 0, 0, 0, 0, 0, 0, 0 },
@@ -154,6 +154,23 @@ public class Sudoku {
         // Initialize the Sudoku solver with the grid and its size, and print the solutions
         Sudoku sd1 = new Sudoku(sudoku1, sudoku1.length);
         sd1.printSolutions(sd1.solveSudoku());
+*/
+        System.out.println("///////////////////////////////////////////////////////");
+        // Define a Sudoku puzzle with some pre-filled values
+        int[][] sudoku2= {
+        { 0, 2, 0, 4, 0, 6, 0, 8, 0 },
+        { 4, 0, 0, 0, 0, 0, 0, 0, 1 },
+        { 0, 0, 6, 0, 0, 0, 7, 0, 0 },
+        { 0, 0, 0, 5, 0, 7, 0, 0, 0 },
+        { 0, 0, 0, 0, 8, 0, 0, 0, 0 },
+        { 0, 0, 0, 1, 0, 9, 0, 0, 0 },
+        { 0, 0, 5, 0, 0, 0, 6, 0, 0 },
+        { 1, 0, 0, 0, 0, 0, 0, 0, 4 },
+        { 0, 6, 0, 8, 0, 2, 0, 3, 0 }
+};
+        // Initialize the Sudoku solver with the grid and its size, and print the solutions
+        Sudoku sd2 = new Sudoku(sudoku2, sudoku2.length);
+        sd2.printSolutions(sd2.solveSudoku());
         
     }
 
