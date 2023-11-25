@@ -1,121 +1,94 @@
-import java.util.HashMap;
-
+import java.util.HashSet;
 
 public class MazeSolving{
 
+    public int [][] maze;
+    public int dimension;
+    public MazeSolving(int maze[][],int dimension){
+        this.maze = maze;
+        this.dimension = dimension;
+    }
 
-    static int N; 
-  
-    static void printSolution(int sol[][]) 
-    { 
-        for (int i = 0; i < N; i++) { 
-            for (int j = 0; j < N; j++) 
-                System.out.print( " " + sol[i][j] + " "); 
-            System.out.println(); 
-        } 
+    public boolean isSafe(int i,int j){
+        return i<dimension && j < dimension && maze[i][j] == 1;
+    }
 
-        System.out.println();
-    } 
-  
-    static boolean isSafe( int maze[][], int i, int j) 
-    { 
-        return (i < N && j < N && i>=0 && j >=0 && maze[i][j] == 1); 
-    } 
+    public HashSet<String> solveTheMaze(){
+        HashSet<String> solutions = new HashSet<>();
+        int sol[][] = new int[dimension][dimension];
+        solveMazeUtil(0, 0, sol, solutions);
+        return solutions;
+    }
 
-    public static int countTheWay(int sol[][]){
+    public void printSolutions(HashSet<String> solutions){
+        for (String sol : solutions)
+            System.out.println(sol);
+    }
 
-        int count = 0;
+    public boolean solveMazeUtil(int i,int j, int sol[][],HashSet<String> solutions){
 
-        for (int i = 0; i < N; i++) { 
-            for (int j = 0; j < N; j++) 
-                if (sol[i][j] == 1)
-                    count++;
+        if(i == dimension -1 && j == dimension -1 && maze[i][j] == 1){
+            sol[i][j] = 1;
+            return true;
         }
 
-        return count;
+        else if (isSafe(i, j)){
+
+            sol[i][j] = 1;
+
+            if(solveMazeUtil(i+1, j, sol,solutions)){
+                solutions.add(giveSolutionAsString(sol));
+            }
+            if(solveMazeUtil(i, j+1, sol, solutions)){
+                solutions.add(giveSolutionAsString(sol));
+            }
+            
+            sol[i][j] = 0;
+            
+        }
+
+        return false;
 
     }
 
-    public static int[][] copyTheMatrix(int sol[][]){
-        int copy[][] = new int [N][N];
-        for (int i = 0; i < N; i++) { 
-            for (int j = 0; j < N; j++) 
-                copy[i][j] = sol[i][j];
+    public String giveSolutionAsString(int sol[][]){
+
+        StringBuilder str = new StringBuilder();
+
+        for(int i=0; i<dimension; i++){
+            for(int k=0; k<dimension; k++){
+                if(k != dimension-1)
+                    str.append(sol[i][k]+" ");
+                else
+                    str.append(sol[i][k]);
+            }
+            str.append("\n");
         }
 
-        return copy;
+        return str.toString();
+
     }
-  
-    static boolean solveMaze(int maze[][]) 
-    { 
-        int sol[][] = new int[N][N]; 
 
-        HashMap<int [][],Integer> map = new HashMap<>();
-  
-        solveMazeRec(maze, 0, 0, sol,map);
+
+
+    public static void main(String[] args) {
         
-        if (map.size() == 0) { 
-            System.out.print("Solution doesn't exist"); 
-            return false; 
-        } 
-
-        int min = Integer.MAX_VALUE;
-
-        for (int arr[][] : map.keySet()){
-            printSolution(arr);
-            if (map.get(arr) <= min){
-                min = map.get(arr);
-                sol = arr;
-            }
-                
-        }
-            
-        System.out.println("Final");
-        printSolution(sol);
-        
-        return true; 
-    } 
-  
-    static boolean solveMazeRec(int maze[][], int i, int j, int sol[][], HashMap<int[][],Integer> map) 
-    {  
-        if (i == N - 1 && j == N - 1 && maze[i][j] == 1) { 
-            sol[i][j] = 1; 
-            return true; 
-        } 
-  
-        if (isSafe(maze, i, j) == true) {  
-            sol[i][j] = 1; 
-  
-            if (solveMazeRec(maze, i + 1, j, sol,map)){
-                map.put(copyTheMatrix(sol) ,countTheWay(sol));
-            }
-        
-            
-            if (solveMazeRec(maze, i, j + 1, sol,map)) {
-                map.put(copyTheMatrix(sol),countTheWay(sol));
-            }
-
-            
-            
-            sol[i][j] = 0; 
-                
-        } 
-  
-        return false; 
-    } 
-    
-    public static void main(String args[])
-    {
-
-        
-
         int maze[][] = { { 1, 1, 1, 1 }, 
-                         { 1, 1, 0, 1 }, 
-                         { 1, 1, 1, 1 }, 
-                         { 1, 1, 1, 1 } }; 
-  
-        N = maze.length; 
-        solveMaze(maze); 
+        { 1, 1, 0, 1 }, 
+        { 0, 1, 0, 1 }, 
+        { 1, 1, 1, 1 } };
+
+        MazeSolving mz = new MazeSolving(maze, maze.length);
+        mz.printSolutions(mz.solveTheMaze());
+        System.out.println(mz.solveTheMaze().size());
+
+
     }
+
+
+
+
+
+
 
 }
